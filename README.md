@@ -1,81 +1,31 @@
 🧩 Patterns Spring Juan
 
 Projeto do desafio Explorando Padrões de Projeto com Java e Spring (DIO).
-Aplicação de pedidos com vários padrões: Builder, Singleton, Strategy, Factory, Facade, Template Method.
+API de pedidos aplicando alguns padrões de projeto (GoF + Spring).
 
 🚀 Tecnologias
 
 Java 17
 
-Spring Boot 3.5.5
-
-Spring Web • Spring Data JPA • Validation
+Spring Boot 3.5.5 (Web, Validation, Data JPA)
 
 H2 Database (em memória)
 
 Maven
 
-🛠️ Padrões de Projeto Implementados
+🛠️ Padrões aplicados
 
-Builder → OrderBuilder
+Builder – construção de Order
 
-Singleton → OrderNumberGenerator
+Singleton – gerador de número do pedido
 
-Strategy + Factory → PaymentStrategy + PaymentStrategyFactory
+Strategy + Factory – meios de pagamento (PIX, Boleto, Cartão)
 
-Facade → CheckoutFacade
+Facade – orquestração do checkout
 
-Template Method → ReceiptTemplate (JsonReceipt / CsvReceipt)
+Template Method – geração de recibo (JSON/CSV)
 
-📂 Estrutura de Pacotes
-src/
-└── main/
-    ├── java/
-    │   └── com/juan/patterns_spring_juan/
-    │       ├── PatternsSpringJuanApplication.java
-    │       ├── builder/
-    │       │   └── OrderBuilder.java
-    │       ├── domain/
-    │       │   ├── Order.java
-    │       │   ├── OrderItem.java
-    │       │   ├── OrderStatus.java
-    │       │   └── PaymentType.java
-    │       ├── facade/
-    │       │   └── CheckoutFacade.java
-    │       ├── payment/
-    │       │   ├── PaymentResult.java
-    │       │   ├── PaymentStrategy.java
-    │       │   ├── PaymentStrategyFactory.java
-    │       │   ├── PixPaymentStrategy.java
-    │       │   ├── CreditCardPaymentStrategy.java
-    │       │   └── BoletoPaymentStrategy.java
-    │       ├── receipt/
-    │       │   ├── ReceiptTemplate.java
-    │       │   ├── JsonReceipt.java
-    │       │   └── CsvReceipt.java
-    │       ├── repository/
-    │       │   └── OrderRepository.java
-    │       ├── shared/
-    │       │   └── OrderNumberGenerator.java
-    │       └── web/
-    │           ├── OrderController.java
-    │           └── dto/
-    │               ├── ItemRequest.java
-    │               ├── OrderRequest.java
-    │               └── OrderResponse.java
-    └── resources/
-        └── application.properties
-
-
-Importante: a classe principal PatternsSpringJuanApplication deve estar no pacote raiz
-com.juan.patterns_spring_juan para que o Spring escaneie todos os subpacotes (web, facade, repository etc.).
-
-▶️ Como Rodar
-# clonar
-git clone https://github.com/JuannMaicon/patterns-spring-juan.git
-cd patterns-spring-juan
-
-# compilar e subir
+▶️ Como rodar
 mvn clean package
 mvn spring-boot:run
 
@@ -86,24 +36,42 @@ JDBC URL: jdbc:h2:mem:patternsdb
 
 User: sa (sem senha)
 
-📌 Endpoints REST
-➕ Criar Pedido — POST /api/orders
+📌 Endpoints
+Criar pedido
+
+POST /api/orders
+Body (JSON):
+
 {
   "paymentType": "PIX",
   "receiptFormat": "JSON",
   "items": [
-    { "sku": "A1", "name": "Mouse",   "quantity": 2, "price": 50.0 },
+    { "sku": "A1", "name": "Mouse", "quantity": 2, "price": 50.0 },
     { "sku": "B2", "name": "Teclado", "quantity": 1, "price": 120.0 }
   ]
 }
 
-📜 Listar Pedidos — GET /api/orders
-🔎 Buscar por ID — GET /api/orders/{id}
-📸 Exemplo de Execução
+Listar pedidos
 
-Coloque um print em docs/example-order.png e referencia aqui:
+GET /api/orders
 
-![exemplo](docs/example-order.png)
+Buscar por id
+
+GET /api/orders/{id}
+
+💻 Teste rápido (PowerShell)
+Invoke-RestMethod http://localhost:8080/api/orders -Method POST `
+  -ContentType "application/json" `
+  -Body '{
+    "paymentType": "PIX",
+    "receiptFormat": "JSON",
+    "items": [
+      { "sku": "A1", "name": "Mouse",   "quantity": 2, "price": 50.0 },
+      { "sku": "B2", "name": "Teclado", "quantity": 1, "price": 120.0 }
+    ]
+  }'
+
+Invoke-RestMethod http://localhost:8080/api/orders -Method GET
 
 🎯 Conclusão
 
